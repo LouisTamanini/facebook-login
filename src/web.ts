@@ -6,6 +6,7 @@ import type {
   FacebookCurrentAccessTokenResponse,
   FacebookGetLoginStatusResponse,
   FacebookGetProfileResponse,
+  FacebookLimitedLoginResponse,
   FacebookConfiguration,
 } from './definitions';
 
@@ -20,6 +21,11 @@ declare interface Facebook {
   ): void;
 
   login(handle: (response: any) => void, options?: { scope: string }): void;
+
+  loginWithLimitedTracking(
+    handle: (response: any) => void,
+    options?: { scope: string },
+  ): void;
 
   logout(handle: (response: any) => void): void;
 
@@ -117,6 +123,12 @@ export class FacebookLoginWeb extends WebPlugin implements FacebookLoginPlugin {
         { scope: options.permissions.join(',') },
       );
     });
+  }
+
+  async loginWithLimitedTracking(_options: {
+    permissions: string[];
+  }): Promise<FacebookLimitedLoginResponse> {
+    throw new Error('Not available on Web');
   }
 
   async logout(): Promise<void> {
